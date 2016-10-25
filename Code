@@ -1,0 +1,338 @@
+# pythongame
+#Project: A Python Game - DARKNESS
+#Name: Aaron Wang/ Benison Doo
+#Period: 5
+#Description: You wake up in the middle of nowhere, your only choice is to explore and hope to find the end, but you are encountered with monsters as you explore.
+#Consitsting of three monsters:
+#                           -Goblin
+#                           -Skeleton
+#                           -Giant Skeleton Goblin
+#Code's Function: When you explore, using a a random number generater, you are encountered with an enemy, or with nothing. When a set number has been reached you are faced with the boss, it uses a list and a random number generater to have a move.
+import random#allows random to be used from the library
+import time#allows time to be used from the library
+import sys#allows tuples and strings to be used from the library
+
+sys.setrecursionlimit(10000)#Set the maximum depth of the Python interpreter stack to limit
+
+def Introduction():
+    #Before the Game
+    raw_input("PRESS ENTER TO WAKE UP\n") #HIGHLIGHT
+    Name = raw_input("What is your name?\n")#input a name
+    time.sleep(1)#wait for 1 second
+    print ("")#print nothing
+    print Name,':', "Huh?"#print ; and huh?
+    time.sleep(1)#wait for 1 second
+    #The Beginning of the Game
+    print ("NARRATOR : You wake up in complete darkness") #HIGHLIGHT
+    time.sleep(1)#wait for 1 second
+    print Name, ':', "Where am I?"#print ; and Where am I?
+    time.sleep(1)#wait for 1 second
+    print ("...")#print ...
+    time.sleep(1)#wait for 1 second
+    print "I need to get out of here"#print I need to get out of here"
+    time.sleep(1)#wait for 1 second
+    Controls()#a function 
+#main
+Introduction()#end function
+
+def Controls():#define function Controls()
+    print 
+    command = raw_input ("Enter 'help' to see the list of controls\n")
+    if command == 'help':#if command equals help use help() and Controls()
+        Help()
+        Controls()
+    elif command == 'EXP':#if command equals EXP use EXP() and Contols()
+        EXP()
+        Controls()
+    elif command == 'explore':#if command equals explore use explore() 
+        explore()
+    elif command == 'quit':#if command equals quit use Quit()
+        Quit()
+    elif command == 'HP':#if command equals HP use Controls() and HP()
+        HP()
+        Controls()
+    else:
+        print "You didn't enter a valid control"#else print You didn't enter a valid control and use Controls()
+        Controls()
+    
+			
+#Character that is created upon running the program. Limited RNG is involved in the creation of a character to ensure a fair chance for any player.
+def Help(): #define function Help()
+	MenuControls = {#options of which Controls can be used
+'EXP',
+'HP',
+'explore',
+'quit',
+'help',
+   }
+	print MenuControls#print the menuControls
+	
+def HP():#define function HP()
+    low_health = 10#set low_health to equal 10
+    max_health = 10#set max_health to equal 10
+    print "Health:", low_health,"/", max_health#print health and display low_health and max_health
+       	
+def EXP():#define function EXP
+	#variables
+    level = 1 #level set to equal to 1
+    levelup = 5#levelup set to equal to 5
+    experience = 0#experience to equal to 0
+        
+    print "Level:", level #print level and use level 
+    print "Experience:", experience/levelup*100,"%"#print Experience and use experience/levelup mupltiply by 100 
+    print "Experience needed until next level:", levelup#print Experience needed until next level and use levelup
+		
+def explore():#define the funtion explore()
+    print "You can't see through the seemingly endless darkness so you stumble forward."#print you can't see through the seemingly endless darkness so you stumble forward.
+    Encounter()#use function Encounter()
+        
+def Quit():#define the function Quit()
+    print "You concede to the enemy's wrath and fall into a deep sleep"#print You cancede to the enemy's wrath and fall into a deep sleep.  	
+    sys.exit()#use the function sys.exit()
+
+def ExperienceCounter():#define the function ExperienceCounter()
+    while True:#while the following is true
+        if experience >= levelup:#if experience is greater or equal to levelup print congratulations, you leveled up!
+            print ("Congratulations, you leveled up!")
+            level += 1#level adds 1 
+            experience = experience - levelup#experience equals experience minus levelup
+            levelup = round(levelup * 1.5)#levelup is equal to it mupltiplied by 1.5
+            max_health += 5#add 5 to max_health
+            low_health = max_health#set low_health to max_health
+
+#Function that dictates what happens when the user encounters an enemy
+def Encounter():#define the funtion Encounter
+    global counter#make the counter Global
+    bosscounter = 0#set bosscounter equal to 0
+    bosschance = random.randint(4,6)#set boss chance to a number from 4 through 6
+    chance = random.randint(1,3)#set chance to a number between 1 through 3
+
+    if bosscounter == bosschance:#is the boss counter is bosschance print the following 
+        print ("After the weary battles, you gaze upward to a giant skeleton goblin")
+        Boss()#use the Boss() function
+		
+    if chance == 1:#if chance is 1 print the following 
+        print ("As you explore the darkness, you encounter what seems to be a goblin.")	
+	bosscounter = bosscounter + 1#add 1 to bosscounter
+	Goblin()#use the function goblin
+
+    elif chance == 2:#else if chance is 2 print the following 
+        print ("As you explore the darkness, you encounter what seems to be a skeleton.")
+	bosscounter = bosscounter + 1#add 1 to bosscounter
+	Skeleton()#use the function Skeleton()
+
+    elif chance == 3:#else if chance is 3 print the following 
+	print ("You continue along but seemn to be going in circles.")
+	Controls()#use the function Controls()
+	
+def Goblin():#define the function Goblin()
+    GoblinHP = 40#set the GoblinHP to 40 
+    combatcommands = {#allowed choices in combatcommands
+    'A) Heavy kick',
+    'B) Quick jab',
+    'C) Rest',
+    'D) Concede',
+    'E) Flee'
+    }
+    print combatcommands  #print the combatcommands  
+    
+    combatcontrol = raw_input("You're in combat! What would you like to do:")#allow user input and print You're in combat! What would you like to do:
+    
+    while GoblinHP > 0:#while GoblinHP is greater than 0
+    	
+    	if GoblinHP <= 0:#if teh GoblinHP is less tahn or equal to 0 print the following 
+            print "You slay the goblin and gain 3 experience"
+            experience += 3#add 3 to the experience 
+            Controls()#use the funtion Controls()
+            
+        if  low_health <=0:#if low_health is lessthan or equal to 0 print the following 
+            print "You concede to the enemy's wrath and fall into a deep sleep"
+            sys.exit#exit the system
+            
+        if combatcontrol == 'A':#if combatcontrol is A
+            chance = random.randint(1,4)#set chance is a random number between 1 and 4
+            if chance == 1:#if chance is 1 print the following 
+                print "You land a critical blow, dealing 8 damage"
+                GoblinHP -= 8#health of GoblinHP is 8 less
+                GoblinAttack()#use the funtion GoblinAttack()
+            elif 2 <= chance <= 3:#else if 2 is less than or equal to chance and chance is less than or equal to three print the following 
+                print "You land a blow, dealing 5 damage"
+                GoblinHP -= 5#Goblin HP is 5 less
+                GoblinAttack()#use the funtion GoblinAttack()
+            elif chance == 4:#else if chance is 4 print the following 
+                print "You completely miss"
+                GoblinAttack()#use the funtion Goblin Attack
+            
+        elif combatcontrol == 'B':#else if the combatcontrol is B
+            chance = random.randint(1,3)#set chance to a random number between 1 and 3
+            if chance == 1:#if chance is 1 print the following 
+                print "You land a critical blow, dealing 6 damage"
+                GoblinHP -= 6#set GoblinHP to 6 less
+                GoblinAttack()#use the funtion GoblinAttack()
+            elif chance == 2:#else if chance is 2 print the following
+                print "You land a blow, dealing 3 damage"
+                GoblinHP -= 3#set GoblinHP 3 less
+                GoblinAttack()#use the funtion GoblinAttack
+            elif chance == 3:#else if chance is 3 print the following 
+                print "You completely miss"
+                GoblinAttack()#use GoblinAttack()
+                
+        elif combatcontrol == 'C':#else if combatcontrol is C
+            chance = random.randint(1,2)#chance is a random number between 1 and 2
+            if chance == 1:#if chance is 1 print the following
+                print "You try to rest, but fail as the enemy disrupts your rest. You don't regain any health"
+                GoblinAttack()#use the function GoblinAttack()
+            elif chance == 2:#else if chance is 2 print the following
+                print "You rest successfully and gain 10 health."
+                low_health += 10#add 10 to low_health
+                GoblinAttack()#use the funtion GoblinAttack()
+        elif combatcontrol == 'D':#else if combatcontrol is D print the following 
+            print "You concede to the enemy's wrath and fall into a deep sleep"
+            sys.exit#exit system
+            
+        elif combatcontrol == 'E':#else if the combatcontrol is E
+            chance = random.randint(1,2)#chance is equal to 1 or 2 
+            if chance == 1:#if chance is 1 print the following 
+                print "You try to flee but fail, losing 5 HP in the process"
+                low_health -= 5#minus 5 from low_health
+                GoblinAttack()#use the funtion GoblinAttack
+            elif chance == 2:#else if chance is 2 print the following 
+                print "You successfully flee"
+                Controls()#use function Controls()
+        else:#else print the following 
+            print "Please enter a correct combat function"
+            Goblin()#use function Goblin()
+            
+def GoblinAttack():#define funtion GoblinAttack()
+	chance = random.randint(1,2)#chance is equal to numbers 1 or 2
+	
+	if chance == 1:#if chance is 1 print the following 
+		print ("The goblin dealt 5 damage")
+		low_health -= 5#subtract 5 from low_health
+	if chance == 2:#if chance is 2 print the following 
+		print ("The enemy missed")
+	Goblin()#use the funtion Goblin()
+	
+def Skeleton():#define the function Skeleton()
+    SkeletonHP = 50#set SkeletonHP equal to 50
+    chance = random.randint(1,3)#chance is equal to a randome number between 1 to 3
+    print "You're in combat! What would you like to do:"#print You're in combat! What would you like to do:
+    combatcommands = {#the allowed commbatcommands used
+    'A) Heavy kick',
+    'B) Quick jab',
+    'C) Rest',
+    'D) Concede',
+    'E) Flee'
+    }
+    print combatcommands#print combatcommands
+    
+    combatcontrol = raw_input("You're in combat! What would you like to do:") #user input and prints You're in combat! What would you like to do:
+    
+    while SkeletonHP > 0:#while SkeletonHP is greater than 0
+        if combatcontrol == 'A':#if the combatcontrol is A
+            chance = random.randint(1,4)#set chance equal to a random number from 1 to 4
+            if chance == 1:#if chance is 1 print the following 
+                print "You land a critical blow, dealing 8 damage"
+                SkeletonHP -= 8#subtract 8 from SkeletonHP
+            elif 2 <= chance <= 3#else if 2 is less than or equal to chance and chance is less than or equal to 3 print the following 
+                print "You land a blow, dealing 5 damage"
+                SkeletonHP -= 5#subtract 5 from SkeletonHP
+            elif chance == 4:#else if Chance is 4 print the following 
+                print "You completely miss"
+        if SkeletonHP <= 0:#if skeletonHP is less than or equal to 0 print the following
+            print "You slay the skeleton and gain 5 experience"
+            experience += 5#add 5 to experience
+	    Controls()#use function Controls()
+        if  low_health <=0:#if low_health is less than or equal to 0 print the following 
+            print "You concede to the enemy's wrath and fall into a deep sleep"
+            sys.exit#exit system"
+            
+        elif combatcontrol == 'B':#else if combatcontrol is B 
+            chance = random.randint(1,3)#chance is a random number form 1 to 3 
+            if chance == 1:#if chance is 1 print the following 
+                print "You land a critical blow, dealing 6 damage"
+                SkeletonHP -= 6#subtract 6 from SkeletonHP 
+            elif chance == 2:#else if chance is 2 print teh following 
+                print "You land a blow, dealing 3 damage"
+                SkeletonHP -= 3#subtract 3 from SkeletonHP
+            elif chance == 3:#else if chance is 3 print the following 
+                print "You completely miss"
+                
+        elif combatcontrol == 'C':#else if combatcontrol is C
+            chance = random.randint(1,2)#chance is equal to 1 or 2 
+            if chance == 1:#if chance is 1 print the following 
+                print "You try to rest, but fail as the enemy disrupts your rest. You don't regain any health"
+            elif chance == 2:#if else chance is 2 print the following 
+                print "You rest successfully and gain 10 health."
+
+        elif combatcontrol == 'D':#else if cobatcontrol is D print the following 
+            print "You concede to the enemy's wrath and fall into a deep sleep"
+            sys.exit#exit system
+            
+        elif combatcontrol == 'E':#else if combatcontrol is E 
+            chance = random.randint(1,2)#chance is equal to 1 or 2 
+            if chance == 1:#if chance is 1 print the following 
+                print "You try to flee but fail, losing 5 HP in the process"
+            elif chance == 2:#else if chance is 2 print the following 
+                print "You successfully flee"
+        else:#else print the following 
+            print "Please enter a correct combat function"
+            Skeleton()#use the funtion Skeleton()
+            
+        
+def Boss():#define funtion Boss 
+    BossHP = 150#BossHP is equal to 150
+    chance = random.randint(1,3)#chance is numbers from 1 to 3
+    bosscombatcommands = {#bosscombatcommands that are allowed 
+    'Heavy kick',
+    'Quick jab',
+    'Rest',
+    'Concede'
+    }
+    print bosscombatcommands#print the Bosscombatcommands
+    
+    combatcontrol = raw_input("You're in combat! What would you like to do:")#user input and prints You're in combat! What would you like to do:
+    
+    while BossHP > 0:#while BossHP is greater than 0
+        if combatcontrol == 'A':#if combatcontrol is A
+            chance = random.randint(1,4)#chance is equal to a number from 1 to 4
+            if chance == 1:#if chance is 1 print the following 
+                print "You land a critical blow, dealing 8 damage"
+                BossHP -= 8#subtract 8 from BossHP
+            elif 2 <= chance <= 3:#else if 2 is less than or equal to chance and chance is less than or equal to 3 print the following 
+                print "You land a blow, dealing 5 damage"
+                BossHP -= 5#subtract 5 from BossHP
+            elif chance == 4:#else if chance is 4 print the following 
+                print "You completely miss"
+        if BossHP <= 0:#if BossHP is less than or equal to 0 print the following 
+            print "You slay the boss and win the game."
+            sys.exit#exit system
+        if  low_health <=0:#if low_health is less than or equal to 0 print the following 
+            print "You concede to the enemy's wrath and fall into a deep sleep"
+            sys.exit#exit system
+            
+        elif combatcontrol == 'B':#else if combatcontrol is B
+            chance = random.randint(1,3)#chance is equal to numbers from 1 to 3 
+            if chance == 1:#if chance is 1 print the following 
+                print "You land a critical blow, dealing 6 damage"
+                BossHP -= 6#subtract 6 from BossHP
+            elif chance == 2:#else if chance is 2 print the following 
+                print "You land a blow, dealing 3 damage"
+                BossHP -= 3#subract 3 from BossHP
+            elif chance == 3:#else if chance is 3 print teh following 
+                print "You completely miss"
+                
+        elif combatcontrol == 'C':#else if combatcontrol is C 
+            chance = random.randint(1,2)#chance is equal to numbers 1 or 2
+            if chance == 1:#if chance is 1 print the following 
+                print "You try to rest, but fail as the enemy disrupts your rest. You don't regain any health"
+            elif chance == 2:#if else chance is 2 print the following 
+                print "You rest successfully and gain 10 health."
+
+        elif combatcontrol == 'D':#else if combatcontrol is D print eh following 
+            print "You concede to the enemy's wrath and fall into a deep sleep"
+            sys.exit#exit system
+            
+        else:#else print the following below 
+            print "Please enter a correct combat function"
+            Boss()#use the funtion Boss
